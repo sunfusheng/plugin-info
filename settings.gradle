@@ -1,2 +1,2 @@
-include ':plugin-build-info',
+include ':plugin_info',
         ':app'

@@ -11,7 +11,7 @@ repositories {
 }
 
 def groupId = 'com.sunfusheng'
-def artifactId = 'plugin-build-info'
+def artifactId = 'plugin-info'
 def version = '1.0.0'
 
 uploadArchives {
@@ -20,7 +20,7 @@ uploadArchives {
             pom.groupId = groupId
             pom.artifactId = artifactId
             pom.version = version
-            repository(url: uri('../local-maven'))
+            repository(url: uri('../local_maven'))
         }
     }
 }
