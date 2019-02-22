@@ -1,0 +1,2 @@
+include ':plugin-build-info',
+        ':app'

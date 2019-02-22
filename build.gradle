@@ -1,0 +1,23 @@
+buildscript {
+    repositories {
+        maven { url uri('local-maven') }
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.3.1'
+        classpath 'com.sunfusheng:plugin-build-info:1.0.0'
+    }
+}
+
+allprojects {
+    repositories {
+        maven { url uri('./local-maven') }
+        google()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
