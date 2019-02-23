@@ -1,6 +1,6 @@
 buildscript {
     repositories {
-        maven { url uri('./local_maven') }
+        maven { url './local_maven' }
         google()
         jcenter()
     }
