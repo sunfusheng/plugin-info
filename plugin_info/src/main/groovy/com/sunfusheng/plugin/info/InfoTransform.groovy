@@ -45,20 +45,19 @@ class InfoTransform extends Transform {
 
         transformInvocation.inputs.each { TransformInput input ->
             input.jarInputs.each { JarInput jarInput ->
-                println TAG + '1 jarInput.name:' + jarInput.name
+                println TAG + '【jarInput.name】:' + jarInput.name
 
                 def destFile = outputProvider.getContentLocation(jarInput.name, jarInput.contentTypes, jarInput.scopes, Format.JAR)
                 FileUtils.copyFile(jarInput.file, destFile)
             }
 
             input.directoryInputs.each { DirectoryInput directoryInput ->
-                println TAG + '2 [directoryInput.name]:' + directoryInput.name + ' [directoryInput.path]:' + directoryInput.getFile().path
+                println TAG + '【directoryInput.name】:' + directoryInput.name
 
                 directoryInput.file.eachFileRecurse { File file ->
-                    println TAG + '3' +
-                            ' [isFile]:' + file.isFile() +
-                            ' [file.name]:' + file.name +
-                            ' [file.path]:' + file.path
+                    if (file.isFile()) {
+                        println TAG + '【file.name】:' + file.name
+                    }
                 }
 
                 def destDir = outputProvider.getContentLocation(directoryInput.name, directoryInput.contentTypes, directoryInput.scopes, Format.DIRECTORY)
