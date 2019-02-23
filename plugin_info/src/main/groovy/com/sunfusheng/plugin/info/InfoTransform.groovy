@@ -2,6 +2,7 @@ package com.sunfusheng.plugin.info
 
 import com.android.build.api.transform.*
 import com.android.build.gradle.internal.pipeline.TransformManager
+import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
 
 /**
@@ -23,13 +24,12 @@ class InfoTransform extends Transform {
 
     @Override
     Set<QualifiedContent.ContentType> getInputTypes() {
-        println TAG + 'getInputTypes()'
         return TransformManager.CONTENT_CLASS
     }
 
     @Override
     Set<? super QualifiedContent.Scope> getScopes() {
-        return TransformManager.PROJECT_ONLY
+        return TransformManager.SCOPE_FULL_PROJECT
     }
 
     @Override
@@ -41,23 +41,30 @@ class InfoTransform extends Transform {
     void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
         super.transform(transformInvocation)
 
+        TransformOutputProvider outputProvider = transformInvocation.outputProvider
+
         transformInvocation.inputs.each { TransformInput input ->
-            input.jarInputs.each { JarInput jar ->
-                println TAG + '1 jar.name:' + jar.name
+            input.jarInputs.each { JarInput jarInput ->
+                println TAG + '1 jarInput.name:' + jarInput.name
+
+                def destFile = outputProvider.getContentLocation(jarInput.name, jarInput.contentTypes, jarInput.scopes, Format.JAR)
+                FileUtils.copyFile(jarInput.file, destFile)
             }
 
-            input.directoryInputs.each { DirectoryInput dir ->
-                println TAG + '2 [dir.name]:' + dir.name + ' [dir.path]:'+dir.getFile().path
+            input.directoryInputs.each { DirectoryInput directoryInput ->
+                println TAG + '2 [directoryInput.name]:' + directoryInput.name + ' [directoryInput.path]:' + directoryInput.getFile().path
 
-                dir.file.eachFileRecurse { File file ->
+                directoryInput.file.eachFileRecurse { File file ->
                     println TAG + '3' +
                             ' [isFile]:' + file.isFile() +
                             ' [file.name]:' + file.name +
                             ' [file.path]:' + file.path
                 }
+
+                def destDir = outputProvider.getContentLocation(directoryInput.name, directoryInput.contentTypes, directoryInput.scopes, Format.DIRECTORY)
+                FileUtils.copyDirectory(directoryInput.file, destDir)
             }
         }
-
     }
 
 }
