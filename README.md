@@ -1,4 +1,6 @@
-# PluginBuildInfo
+# plugin-info
+
+应用在运行时显示编译时的信息：编译的第三方库
 
 ### 第一个坑：编译找不到插件
 
