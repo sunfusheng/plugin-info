@@ -2,7 +2,9 @@ package com.sunfusheng.plugin.demo;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import com.sunfusheng.StickyHeaderDecoration;
 
 import java.util.List;
 
@@ -13,14 +15,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TextView vInfo = findViewById(R.id.vInfo);
-
-        List<String> jars = new InfoStore().getLists().get(0);
-
-        StringBuilder sb = new StringBuilder();
-        for (String jarName : jars) {
-            sb.append(jarName).append('\n');
-        }
-        vInfo.setText(sb);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(new StickyHeaderDecoration());
+        List<List<String>> lists = new InfoStore().getLists();
+        StickyGroupAdapter stickyAdapter = new StickyGroupAdapter(this, lists);
+        recyclerView.setAdapter(stickyAdapter);
     }
 }

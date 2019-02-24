@@ -35,8 +35,9 @@ public class InfoStore {
         for (Map.Entry<String, List<String>> entry : infoMap.entrySet()) {
             List<String> list = entry.getValue();
             if (list != null && list.size() > 0) {
-                list.add(0, entry.getKey());
-                lists.add(list);
+                List<String> item = new ArrayList<>(list);
+                item.add(0, entry.getKey());
+                lists.add(item);
             }
         }
         return lists;
