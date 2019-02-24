@@ -8,13 +8,15 @@ import org.gradle.api.Project
 /**
  * @author sunfusheng on 2019/2/23.
  */
-class InfoTransform extends Transform {
+public class InfoTransform extends Transform {
     private static final String TAG = '---> '
 
     Project project
+    InjectAction injectTask
 
     InfoTransform(Project project) {
         this.project = project
+        this.injectTask = new InjectAction(project)
     }
 
     @Override
@@ -47,16 +49,18 @@ class InfoTransform extends Transform {
             input.jarInputs.each { JarInput jarInput ->
                 println TAG + '【jarInput.name】:' + jarInput.name
 
+                injectTask.inject(jarInput)
+
                 def destFile = outputProvider.getContentLocation(jarInput.name, jarInput.contentTypes, jarInput.scopes, Format.JAR)
                 FileUtils.copyFile(jarInput.file, destFile)
             }
 
             input.directoryInputs.each { DirectoryInput directoryInput ->
-                println TAG + '【directoryInput.name】:' + directoryInput.name
+//                println TAG + '【directoryInput.name】:' + directoryInput.name
 
                 directoryInput.file.eachFileRecurse { File file ->
                     if (file.isFile()) {
-                        println TAG + '【file.name】:' + file.name
+                        println TAG + '【file.name】:' + file.name + '【file.path】:'+file.path
                     }
                 }
 

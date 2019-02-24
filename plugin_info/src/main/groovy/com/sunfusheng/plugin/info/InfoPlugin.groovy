@@ -11,7 +11,7 @@ class InfoPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-        println "【$project.name】applys plugin"
+        println '【' + project.name + '】applys plugin'
 
         // AppExtension.class就是build.gradle中android{...}配置
         def android = project.extensions.findByType(AppExtension.class)
