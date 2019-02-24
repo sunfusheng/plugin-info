@@ -1,3 +1,2 @@
 include ':plugin_info',
-        ':lib_info',
         ':app'

@@ -8,6 +8,7 @@ dependencies {
 dependencies {
     compile gradleApi()
     compile localGroovy()
+    compile 'org.javassist:javassist:3.24.1-GA'
 }
 
 repositories {

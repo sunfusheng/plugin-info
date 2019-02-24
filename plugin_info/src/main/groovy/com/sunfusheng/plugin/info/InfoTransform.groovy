@@ -47,22 +47,24 @@ public class InfoTransform extends Transform {
 
         transformInvocation.inputs.each { TransformInput input ->
             input.jarInputs.each { JarInput jarInput ->
-                println TAG + '【jarInput.name】:' + jarInput.name
+//                println TAG + '【jarInput.name】:' + jarInput.name
 
-                injectTask.inject(jarInput)
+                injectTask.addJar(jarInput)
 
                 def destFile = outputProvider.getContentLocation(jarInput.name, jarInput.contentTypes, jarInput.scopes, Format.JAR)
                 FileUtils.copyFile(jarInput.file, destFile)
             }
 
             input.directoryInputs.each { DirectoryInput directoryInput ->
-//                println TAG + '【directoryInput.name】:' + directoryInput.name
+                println TAG + '【directoryInput.name】:' + directoryInput.name
 
-                directoryInput.file.eachFileRecurse { File file ->
-                    if (file.isFile()) {
-                        println TAG + '【file.name】:' + file.name + '【file.path】:'+file.path
-                    }
-                }
+                injectTask.inject(directoryInput)
+
+//                directoryInput.file.eachFileRecurse { File file ->
+//                    if (file.isFile()) {
+//                        println TAG + '【file.name】:' + file.name + '【file.path】:'+file.path
+//                    }
+//                }
 
                 def destDir = outputProvider.getContentLocation(directoryInput.name, directoryInput.contentTypes, directoryInput.scopes, Format.DIRECTORY)
                 FileUtils.copyDirectory(directoryInput.file, destDir)
