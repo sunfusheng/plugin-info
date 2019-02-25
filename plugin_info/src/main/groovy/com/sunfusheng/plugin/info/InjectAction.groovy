@@ -8,7 +8,6 @@ import javassist.ClassPool
 import javassist.CtClass
 import javassist.CtConstructor
 import org.gradle.api.Project
-
 /**
  * @author sunfusheng on 2019/2/23.
  */
@@ -19,6 +18,18 @@ class InjectAction {
 
     InjectAction(Project project) {
         this.project = project
+    }
+
+    void addBuildTime(String timeConsumedDesc) {
+        def key = "编译时间"
+        def list = infoMap.get(key)
+        if (list == null) {
+            list = new ArrayList<String>()
+            infoMap.put(key, list)
+        }
+        if (!list.contains(timeConsumedDesc)) {
+            list.add(timeConsumedDesc)
+        }
     }
 
     void addJar(JarInput jarInput) {
@@ -62,4 +73,5 @@ class InjectAction {
             e.printStackTrace()
         }
     }
+
 }

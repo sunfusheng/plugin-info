@@ -8,15 +8,13 @@ import org.gradle.api.Project
 /**
  * @author sunfusheng on 2019/2/23.
  */
-public class InfoTransform extends Transform {
-    private static final String TAG = '---> '
-
+class InfoTransform extends Transform {
     Project project
-    InjectAction injectTask
+    InjectAction injectAction
 
-    InfoTransform(Project project) {
+    InfoTransform(Project project, InjectAction injectAction) {
         this.project = project
-        this.injectTask = new InjectAction(project)
+        this.injectAction = injectAction
     }
 
     @Override
@@ -47,24 +45,18 @@ public class InfoTransform extends Transform {
 
         transformInvocation.inputs.each { TransformInput input ->
             input.jarInputs.each { JarInput jarInput ->
-//                println TAG + '【jarInput.name】:' + jarInput.name
+                println '--->【jarInput.name】:' + jarInput.name
 
-                injectTask.addJar(jarInput)
+                injectAction.addJar(jarInput)
 
                 def destFile = outputProvider.getContentLocation(jarInput.name, jarInput.contentTypes, jarInput.scopes, Format.JAR)
                 FileUtils.copyFile(jarInput.file, destFile)
             }
 
             input.directoryInputs.each { DirectoryInput directoryInput ->
-                println TAG + '【directoryInput.name】:' + directoryInput.name
+                println '--->【directoryInput.name】:' + directoryInput.name
 
-                injectTask.inject(directoryInput)
-
-//                directoryInput.file.eachFileRecurse { File file ->
-//                    if (file.isFile()) {
-//                        println TAG + '【file.name】:' + file.name + '【file.path】:'+file.path
-//                    }
-//                }
+                injectAction.inject(directoryInput)
 
                 def destDir = outputProvider.getContentLocation(directoryInput.name, directoryInput.contentTypes, directoryInput.scopes, Format.DIRECTORY)
                 FileUtils.copyDirectory(directoryInput.file, destDir)

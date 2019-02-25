@@ -8,7 +8,7 @@ import java.util.zip.ZipEntry;
 /**
  * @author sunfusheng on 2019/2/23.
  */
-public class Utils {
+class PluginUtil {
 
     /**
      * 将该jar包解压到指定目录

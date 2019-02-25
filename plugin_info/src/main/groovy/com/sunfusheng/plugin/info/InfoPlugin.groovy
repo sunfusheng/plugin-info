@@ -1,6 +1,7 @@
 package com.sunfusheng.plugin.info
 
 import com.android.build.gradle.AppExtension
+import com.android.build.gradle.AppPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -11,12 +12,12 @@ class InfoPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-        println '【' + project.name + '】applys plugin'
-
-        // AppExtension.class就是build.gradle中android{...}配置
-        def android = project.extensions.findByType(AppExtension.class)
-
-        // 注册自己的Transform
-        android.registerTransform(new InfoTransform(project))
+        def isApp = project.plugins.hasPlugin(AppPlugin.class)
+        if (isApp) {
+            def android = project.extensions.findByType(AppExtension.class)
+            InjectAction injectAction = new InjectAction(project)
+            android.registerTransform(new InfoTransform(project, injectAction))
+            project.gradle.addListener(new TaskBuildListener(injectAction))
+        }
     }
 }
