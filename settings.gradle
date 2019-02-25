@@ -1,2 +1,2 @@
-include ':plugin_info',
+include ":plugin_info",
         ':app'
