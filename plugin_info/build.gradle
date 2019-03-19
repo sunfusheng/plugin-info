@@ -2,7 +2,7 @@ apply plugin: 'groovy'
 apply plugin: 'maven'
 
 dependencies {
-    compile 'com.android.tools.build:gradle:3.3.1'
+    compile 'com.android.tools.build:gradle:3.3.2'
 }
 
 dependencies {
